@@ -1,9 +1,10 @@
+#!/usr/bin/env python2
+
 import cv2
 import numpy as np
 
-def find_cards(img):
-    numcards = 9
 
+def find_cards(img):
     img = cv2.resize(img, (0,0), fx=0.25, fy=0.25)
     hsv = cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
 
@@ -24,7 +25,19 @@ def find_cards(img):
 
     # Next we look at the actual shape of the objects in the cards.
     contours, hierarchy = cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-    contours = sorted(contours, key=cv2.contourArea,reverse=True)[:numcards]
+    contours = sorted(contours, key=cv2.contourArea,reverse=True)
+
+    # count the number of shapes that have a big area.
+    shape_thresh = 10000
+    numcards = 0
+    for contour in contours:
+        if cv2.contourArea(contour) > shape_thresh:
+            numcards += 1
+    # remove 1 or 2 contours if the number is over a multiple of 3
+    numcards = numcards - (numcards%3)
+    print("%d cards" % numcards)
+    # clip off contours that are too small. this list is already sorted by size.
+    contours = contours[:numcards]
 
     ret = []
 

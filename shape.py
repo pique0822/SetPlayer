@@ -66,7 +66,7 @@ print color_of_image(sshape)
 oval = finder.find_cards(cv2.imread('imgs/bbg_purple_oval.jpg'))[0]
 print color_of_image(oval)
 """
-images = CardFinder.find_cards(cv2.imread('imgs/full_set.jpg'))
+images = CardFinder.find_cards(cv2.imread('imgs/.jpg'))
 for img in images:
     print shape_of_image(img)
     cv2.imshow("image",img)
