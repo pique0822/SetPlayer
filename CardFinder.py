@@ -33,7 +33,9 @@ def find_cards(img):
     for contour in contours:
         if cv2.contourArea(contour) > shape_thresh:
             numcards += 1
-    # remove 1 or 2 contours if the number is over a multiple of 3
+        else:
+            break
+    # remove 1 or 2 contours if the number is not a multiple of 3
     numcards = numcards - (numcards%3)
     print("%d cards" % numcards)
     # clip off contours that are too small. this list is already sorted by size.
@@ -64,8 +66,8 @@ def find_cards(img):
 
 # example usage
 if __name__ == "__main__":
-    # img = cv2.imread('imgs/full_set_bbg2.jpg') # doesn't work with this cardfinder filtering out table
-    img = cv2.imread('imgs/full_set.jpg')
+    # img = cv2.imread('imgs/full_set_bbg2.jpg') # doesn't work with this cardfinder, which filters out table
+    img = cv2.imread('imgs/twelve_set_wood1.jpg')
     for im in find_cards(img):
         cv2.imshow('image',im)
         cv2.waitKey(0)
